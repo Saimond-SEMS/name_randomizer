@@ -123,6 +123,7 @@ function limpiarNombres() {
 	}
 
 	document.getElementById("botonRedo").remove();
+	rerrolExists = false;
 }
 
 function winner() {
