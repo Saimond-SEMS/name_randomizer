@@ -51,7 +51,6 @@ function sortearAmigo() {
 	}
 
 	resetGame();
-	console.log(listaAmigos);
 	element = document.getElementById("botonSort");
 	requestAnimationFrame(rollWheel);
 }
