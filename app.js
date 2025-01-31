@@ -12,6 +12,7 @@ let on = 0;
 let onSpeed = 0;
 
 let win = false;
+let rerrolExists = false;
 
 function agregarAmigo() {
 	let name = document.getElementById("amigo");
@@ -36,6 +37,10 @@ function agregarAmigo() {
 		// amigos.push(block);
 
 		resetBox();
+		if (!rerrolExists) {
+			crearBotonRedo();
+			rerrolExists = true;
+		}
 	}
 }
 
@@ -99,6 +104,25 @@ function resetGame() {
 		v.children[0].removeAttribute("picked");
 		v.children[0].removeAttribute("winner");
 	}
+}
+
+function crearBotonRedo(){
+	let b = document.createElement("button");
+	b.setAttribute("id", "botonRedo");
+	b.setAttribute("onclick", "limpiarNombres()")
+	b.innerHTML= "Limpiar lista";
+
+	document.getElementById("botonSort").parentElement.appendChild(b);
+}
+
+function limpiarNombres() {
+	let listaN = document.querySelectorAll("#nombreAmigo");
+
+	for (const v of document.querySelectorAll("#nombreAmigo")) {
+		document.getElementById("listaAmigos").removeChild(v);
+	}
+
+	document.getElementById("botonRedo").remove();
 }
 
 function winner() {
