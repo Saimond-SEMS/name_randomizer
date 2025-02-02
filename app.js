@@ -1,18 +1,13 @@
 //	El principal objetivo de este desafío es fortalecer tus habilidades en lógica de programación.
 //	Aquí deberás desarrollar la lógica para resolver el problema.
 
-let listNombres= [];
-let nAmigos = 0;
-let frames = 0;
 let pick = -1;
-
 let counter = 0;
-let element;
 let on = 0;
 let onSpeed = 0;
-
-let win = false;
 let rerrolExists = false;
+
+const regexValidator = /^[a-zA-ZÀ-ÖØ-öø-ÿ-\s]+$/;
 
 function agregarAmigo() {
 	let name = document.getElementById("amigo");
@@ -20,21 +15,22 @@ function agregarAmigo() {
 	if (name.value == "") {
 
 		alert("Campo vacío");
+		return;
+	}
 
-	} else {
+	if (validateName(name.value)) {
+
 		//let newName = document.createElement("li");
 		let newNameDiv = document.createElement("div");
 		let newNameLi = document.createElement("li");
 
 		newNameDiv.setAttribute("class", "button-container");
-		newNameDiv.setAttribute("id", "nombreAmigo");
+		newNameDiv.setAttribute("class", "nombreAmigo");
 		newNameLi.innerHTML = name.value;
 
 		newNameDiv.appendChild(newNameLi);
 
-		let block = document.getElementById("listaAmigos");
-		block.appendChild(newNameDiv);
-		// amigos.push(block);
+		document.getElementById("listaAmigos").appendChild(newNameDiv);
 
 		resetBox();
 		if (!rerrolExists) {
@@ -44,14 +40,37 @@ function agregarAmigo() {
 	}
 }
 
+function validateName(n) {
+	let listaAmigos = document.querySelectorAll(".nombreAmigo");
+
+	if (listaAmigos.length > 0) {
+
+		for (const v of listaAmigos) {
+			if (v.children[0].innerHTML == n) {
+				alert("Nombre repetido");
+				return false;
+			}
+		}
+
+	}
+
+	if ( !regexValidator.test(n) ){
+		console.log(n)
+		alert("Invalid simbols")
+		return false;
+	}
+
+	return true;
+}
+
 function sortearAmigo() {
-	listaAmigos = document.querySelectorAll("#nombreAmigo");
+	let listaAmigos = document.querySelectorAll(".nombreAmigo");
 	if (listaAmigos.length == 0) {
 		return;
 	}
 
 	resetGame();
-	element = document.getElementById("botonSort");
+	console.log(listaAmigos);
 	requestAnimationFrame(rollWheel);
 }
 
@@ -73,6 +92,7 @@ function rollWheel(){
 }
 
 function pickAmigo() {
+	let listaAmigos = document.querySelectorAll(".nombreAmigo");
 	let elementPicked;
 
 	if (pick == -1)	{
@@ -93,11 +113,11 @@ function resetBox() {
 }
 
 function resetGame() {
+	let listaAmigos = document.querySelectorAll(".nombreAmigo");
 	counter = Math.pow(Math.random()+1, 2)*100;
 	on = 1;
 	onSpeed = 2.1;
 	pick = -1;
-	win = false;
 
 	for (const v of listaAmigos) {
 		v.children[0].removeAttribute("picked");
@@ -115,9 +135,9 @@ function crearBotonRedo(){
 }
 
 function limpiarNombres() {
-	let listaN = document.querySelectorAll("#nombreAmigo");
+	let listaAmigos = document.querySelectorAll(".nombreAmigo");
 
-	for (const v of document.querySelectorAll("#nombreAmigo")) {
+	for (const v of document.querySelectorAll(".nombreAmigo")) {
 		document.getElementById("listaAmigos").removeChild(v);
 	}
 
@@ -129,5 +149,4 @@ function winner() {
 	let w = document.querySelector("li[picked]");
 	w.setAttribute("winner", true);
 	w.removeAttribute("picked");
-	win = false;
 }
